@@ -116,8 +116,10 @@ private ArrayList<AlienShip> setAliens() {
         	}
         	drawAliens(g2d);
         	moveAliens();
-        	 g2d.setFont( new Font("Times New Roman", Font.BOLD, 50));
-        	g2d.drawString("lives: "+lives, 0, 300);
+        	g2d.setColor(Color.BLACK);
+        	 g2d.setFont( new Font("Times New Roman", Font.BOLD, 20));
+        	g2d.drawString("HP: "+lives, 29, 610);
+        
         }
         if(aliens.isEmpty()) {
         	 g2d.setFont( new Font("Times New Roman", Font.BOLD, 50));
