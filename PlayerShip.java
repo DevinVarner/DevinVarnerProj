@@ -7,7 +7,7 @@ public class PlayerShip extends SpaceShip{
 		super();
 	}
 	
-	public PlayerShip(int x, int y) {
-		super(x, y, new ImageIcon("PlayerShip.gif"));
+	public PlayerShip(int x, int y, int dx, int dy) {
+		super(x, y,new ImageIcon("PlayerShip.gif"));
 	}
 }

@@ -1,12 +1,18 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.awt.event.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 
 
-public class Game  extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
+public class Game  extends JPanel implements Runnable, KeyListener {
 	private BufferedImage back;
     private int key;
     private boolean spacebar;
@@ -29,12 +35,12 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
     public Game() {
         new Thread(this).start();    
         this.addKeyListener(this);
-        this.addMouseMotionListener(this);
-        this.addMouseListener(this);
+        //this.addMouseMotionListener(this);
+        //this.addMouseListener(this);
         key =-1;
         spacebar = false;
-        playerShip = new PlayerShip(0,560);
-        background = new ImageIcon("background.png");
+        playerShip = new PlayerShip(0,500,0,0);
+        background = new ImageIcon("background.gif");
         aliens = setAliens();
         playerMissiles= new ArrayList <PlayerMissle> ();
         alienMissiles= new ArrayList <AlienProj> ();
@@ -49,16 +55,16 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
         sadmusic = true;
     }
 
-private ArrayList<AlienShip> setAliens() {
-	ArrayList <AlienShip> temp = new ArrayList() ;
-	
-	for(int i = 0; i < 5; i++) {
-		for (int j = 0; j < 7; j++) {
-			temp.add(new AlienShip (j*75, i*50));
-		}
-	}
-	return temp;
-}
+    private ArrayList<AlienShip> setAliens() {
+        ArrayList <AlienShip> temp = new ArrayList() ;
+        
+        for(int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                temp.add(new AlienShip (j*75, i*50));
+            }
+        }
+        return temp;
+    }
     
     public void run()
        {
@@ -102,7 +108,7 @@ private ArrayList<AlienShip> setAliens() {
         g2d.clearRect(0, 0, getSize().width, getSize().height);
         
         alienShoot(g2d);
-        g2d.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
+        g2d.drawImage(background.getImage(), 0, 0, 1700, getHeight(), this);
         g2d.drawImage(playerShip.getImg().getImage(), playerShip.getX(),playerShip.getY(), playerShip.getW(), playerShip.getH(), this);
         Color white = new Color(255,255,255);
         g2d.setColor(white);
@@ -116,8 +122,12 @@ private ArrayList<AlienShip> setAliens() {
         	}
         	drawAliens(g2d);
         	moveAliens();
+        	 g2d.setColor(Color.white);
+        	 g2d.fill3DRect(26, 590, 53, 25, playMusic);
         	g2d.setColor(Color.BLACK);
         	 g2d.setFont( new Font("Times New Roman", Font.BOLD, 20));
+        	 g2d.draw3DRect(26, 590, 53, 25, playMusic);
+        	
         	g2d.drawString("HP: "+lives, 29, 610);
         
         }
@@ -208,7 +218,7 @@ private ArrayList<AlienShip> setAliens() {
    private void collision() {
 		
 		for (int i = 0; i<playerMissiles.size(); i++) { 
-			for (int j = 0; j<aliens.size(); j++) {
+			for (int j = 0; j<alienMissiles.size(); j++) {
 				if (playerMissiles.get(i).alienCollision(aliens.get(j))) {
 					aliens.remove(aliens.get(j));
 					if(playMusic) {
@@ -286,7 +296,7 @@ private ArrayList<AlienShip> setAliens() {
 			for(AlienShip inv : aliens) {
 			
 				inv.reverseHorz();
-				inv.setY(inv.getY()+5);
+				inv.setY(inv.getY());
 				
 			}
 			
@@ -316,15 +326,12 @@ private ArrayList<AlienShip> setAliens() {
         
         key= e.getKeyCode();
         System.out.println(key);
-        if(key==65) {
+        if(key==32) {
             spacebar = true;
     		playerMissiles.add(new PlayerMissle(playerShip.getX()+22, playerShip.getY()-20));
 
         }
-        if(key==32) {
-        	aliens.clear();
-            
-        }
+    
         if(key==86) {
         	for(AlienShip inv : aliens) {
     			
@@ -333,6 +340,11 @@ private ArrayList<AlienShip> setAliens() {
     			
     		}
         }
+        if(key==68){
+            playerShip.setDx(1);
+            
+        }
+
         
         
     }
@@ -353,78 +365,6 @@ private ArrayList<AlienShip> setAliens() {
 
 
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		int x = e.getX();
-		playerShip.setX(x);
-		
-		
-	}
-
-
-
-
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		playerMissiles.add(new PlayerMissle(playerShip.getX()+22, playerShip.getY()));
-		if(playMusic) {
-			p.playmusic("pow-90398.wav");
-			p.playmusic("stop");
-		}
-	}
-
-
-
-
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
     
     
     

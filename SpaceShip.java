@@ -33,7 +33,7 @@ public class SpaceShip {
 		w=50;
 		h=50;
 		shipImg = i;
-		dx=1;
+		dx=0;
 		dy=0;
 	}
 	
@@ -67,9 +67,23 @@ public class SpaceShip {
 	public int getH() {
 		return h;
 	}
-	public void setdy(int newdy) {
-		dy = newdy;
-	}
+	public int getDX() {
+return dx;
+}
+
+public int getDY() {
+return dy;
+}
+
+public void setDx(int c) {
+dx=c;
+}
+
+
+public void setDy(int c) {
+dy=c;
+}
+
 	public void reverseHorz () {
 		dx=dx*-1;
 	}
