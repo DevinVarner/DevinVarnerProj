@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Main extends JFrame{
+public class Sound extends JFrame{
 	private static final int WIDTH =1024;
 	private static final int HEIGHT=500;
 	
-	public Main () {
+	public Sound () {
 		super("Pumkin");
 		setSize(WIDTH, HEIGHT);
 		Game play = new Game();
@@ -21,7 +21,7 @@ public class Main extends JFrame{
 	
 
 	public static void main(String[] args) {
-		Main run = new Main();
+		Sound run = new Sound();
 		
 
 	}
