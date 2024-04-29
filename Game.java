@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class Game extends JPanel implements Runnable, KeyListener{
 	private BufferedImage back;
@@ -11,12 +12,16 @@ public class Game extends JPanel implements Runnable, KeyListener{
     private ImageIcon title2;
 	private boolean start;
     private boolean gameStarted;
+    private boolean spacebar;
         private boolean collide;
         private Sound p;
         private double time;
         private double currtime;
         private int key;
         private Pictures player;
+        private Pictures player2;
+        private ArrayList <PlayerMissle> playerMissiles;
+
         
         
     public Game() {
@@ -25,12 +30,14 @@ public class Game extends JPanel implements Runnable, KeyListener{
         background = new ImageIcon("background.gif");
         title = new ImageIcon("Title1.png");
         title2 = new ImageIcon("Title2.png");
-        player=new Pictures("player.png",500,355,0,0, 10,20);
+        player=new Pictures("player.png",500,250,0,0, 20,40);
+        playerMissiles= new ArrayList <PlayerMissle> ();
         start=true;
-        
+        spacebar = false;
+        key=-1;
         gameStarted = true;
         this.addKeyListener(this);
-        //p.playmusic("mario.wav");
+        p.playmusic("mario.wav");
         
     }
 	
@@ -38,6 +45,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
 		try {
 			while(true) {
 				Thread.currentThread().sleep(5);
+                move();
 				repaint();
 			}
 		}
@@ -63,13 +71,24 @@ public class Game extends JPanel implements Runnable, KeyListener{
 		
 		//START CODING GRAPHICS HERE
         Color mynewcolor = new Color(236,88,6);
+        
        
-        System.out.println(start);
+        System.out.println(key);
+        if(spacebar) {
+            
+        }
+        if(!playerMissiles.isEmpty()) {
+        	drawPlayerMissiles(g2d);
+        }
+        for(PlayerMissle pp: playerMissiles) {
+            pp.setY(-1);
+        }
+ 
         if(start==false ){
         g2d.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
         g2d.drawImage(title.getImage(), 62, 0, 900, 50, this);
         
-        g2d.drawImage(new ImageIcon(player.getPic()).getImage(),(player.getx()),(player.gety()),85,100, this);	
+        g2d.drawImage(new ImageIcon(player.getPic()).getImage(),(player.getx()),(player.gety()),170,200, this);	
         }
         if(start==true && gameStarted){
         g2d.drawImage(background.getImage(), -600, 0, 2000, 1500, this);
@@ -105,6 +124,12 @@ public class Game extends JPanel implements Runnable, KeyListener{
             
         player.move();
     }
+    private void drawPlayerMissiles(Graphics g2d) {
+        for(PlayerMissle pm : playerMissiles) {
+            g2d.drawImage(pm.getImg().getImage(), pm.getX(), pm.getY(), pm.getW(), pm.getH(), this);
+        }
+    }
+ 
 	private int getBackground(int width) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getBackground'");
@@ -120,24 +145,39 @@ public class Game extends JPanel implements Runnable, KeyListener{
    
     public void keyPressed(KeyEvent e) {
     key=e.getKeyCode();
-    System.out.println(key);
-    if (key == 32 ) {
+    System.out.println(player.getdx());
+    if (key == 83 ) {
         currtime = 0;
         start = false;
         gameStarted = false;
             
     }
-    key = e.getKeyCode();
-    if (key == 82) { // Reset the game when 'R' is pressed
-        currtime = 0;
-        start = false;
-        gameStarted = false;
+    if (key == 32 ) {
+        
+            playerMissiles.add(new PlayerMissle(player.getx()+22, player.gety()));
+            
+        
+    
+            
     }
+    key = e.getKeyCode();
+    if(key==65) {
+        spacebar = true;
+        playerMissiles.add(new PlayerMissle(player.getx()+22, player.gety()-20));
+
+    }
+
     if(key==39) {
-        player.setDx(2);
+        player.setDx(3);
+        move();
+        player=new Pictures("player2.png",player.getx(),player.gety(),player.getdx(),player.getdy(), 20,40);
+
     }
     if(key==37) {
-        player.setDx(-2);
+        player.setDx(-3);
+        move();
+        player=new Pictures("player.png",player.getx(),player.gety(),player.getdx(),player.getdy(), 20,40);
+
         }
 
 if(key==38) {
@@ -153,15 +193,18 @@ if(key==82) {
 
 
 public void keyReleased(KeyEvent e){
+    spacebar = false;
 key=e.getKeyCode();
 if(key==39) {
     player.setDx(0);
+    move();
 }
 
 
 
 if(key==37) {
     player.setDx(0);
+    move();
     }
 
 if(key==40) {
@@ -185,6 +228,7 @@ if(key==82) {
 currtime=0;
 System.out.println(start);
 System.out.println(gameStarted);
+
 }
 }
 }

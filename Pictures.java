@@ -1,4 +1,3 @@
-
 public class Pictures {
 
     public static final String wav = null;
