@@ -1,9 +1,14 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 public class Game extends JPanel implements Runnable, KeyListener{
 	private BufferedImage back;
@@ -13,6 +18,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
 	private boolean start;
     private boolean gameStarted;
     private boolean spacebar;
+    private boolean pd;
         private boolean collide;
         private Sound p;
         private double time;
@@ -21,7 +27,6 @@ public class Game extends JPanel implements Runnable, KeyListener{
         private Pictures player;
         private Pictures player2;
         private ArrayList <PlayerMissle> playerMissiles;
-
         
         
     public Game() {
@@ -38,6 +43,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
         gameStarted = true;
         this.addKeyListener(this);
         p.playmusic("mario.wav");
+        pd=true;
         
     }
 	
@@ -74,14 +80,17 @@ public class Game extends JPanel implements Runnable, KeyListener{
         
        
         System.out.println(key);
-        if(spacebar) {
+        if(spacebar && pd==true) {
             
         }
-        if(!playerMissiles.isEmpty()) {
-        	drawPlayerMissiles(g2d);
-        }
+
         for(PlayerMissle pp: playerMissiles) {
-            pp.setY(-1);
+            if(player.getPic() == "player.png"){
+            pp.setX(-50);
+            }
+            else{
+            pp.setX(50);
+            }
         }
  
         if(start==false ){
@@ -95,6 +104,12 @@ public class Game extends JPanel implements Runnable, KeyListener{
         g2d.drawImage(title.getImage(), 62, 170, 900, 50, this);
         g2d.drawImage(title2.getImage(), 287, 225, 450, 25, this);
         }
+
+        if(!playerMissiles.isEmpty()) {
+        	drawPlayerMissiles(g2d);
+          
+        }
+
         Color mynewColor2 = new Color(255,179,64);
 
 		
@@ -126,7 +141,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
     }
     private void drawPlayerMissiles(Graphics g2d) {
         for(PlayerMissle pm : playerMissiles) {
-            g2d.drawImage(pm.getImg().getImage(), pm.getX(), pm.getY(), pm.getW(), pm.getH(), this);
+            g2d.drawImage(pm.getImg().getImage(), pm.getX(), pm.getY(),60, 60, this);
         }
     }
  
@@ -153,9 +168,9 @@ public class Game extends JPanel implements Runnable, KeyListener{
             
     }
     if (key == 32 ) {
-        
-            playerMissiles.add(new PlayerMissle(player.getx()+22, player.gety()));
+            playerMissiles.add(new PlayerMissle(player.getx(), player.gety()+50, 20,20, key, new ImageIcon ("Pm1.png")));
             
+               
         
     
             
@@ -163,7 +178,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
     key = e.getKeyCode();
     if(key==65) {
         spacebar = true;
-        playerMissiles.add(new PlayerMissle(player.getx()+22, player.gety()-20));
+        
 
     }
 
@@ -171,13 +186,13 @@ public class Game extends JPanel implements Runnable, KeyListener{
         player.setDx(3);
         move();
         player=new Pictures("player2.png",player.getx(),player.gety(),player.getdx(),player.getdy(), 20,40);
-
+        pd=false;
     }
     if(key==37) {
         player.setDx(-3);
         move();
         player=new Pictures("player.png",player.getx(),player.gety(),player.getdx(),player.getdy(), 20,40);
-
+        pd=true;
         }
 
 if(key==38) {
@@ -193,7 +208,7 @@ if(key==82) {
 
 
 public void keyReleased(KeyEvent e){
-    spacebar = false;
+    
 key=e.getKeyCode();
 if(key==39) {
     player.setDx(0);
