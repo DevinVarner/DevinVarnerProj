@@ -27,6 +27,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
         private Pictures player;
         private Pictures player2;
         private ArrayList <PlayerMissle> playerMissiles;
+        private ArrayList <PlayerMissle> playerMissiles2;
         
         
     public Game() {
@@ -37,6 +38,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
         title2 = new ImageIcon("Title2.png");
         player=new Pictures("player.png",500,250,0,0, 20,40);
         playerMissiles= new ArrayList <PlayerMissle> ();
+        playerMissiles2= new ArrayList <PlayerMissle> ();
         start=true;
         spacebar = false;
         key=-1;
@@ -84,12 +86,17 @@ public class Game extends JPanel implements Runnable, KeyListener{
             
         }
 
-        for(PlayerMissle pp: playerMissiles) {
-            if(player.getPic() == "player.png"){
-            pp.setX(-50);
+        for (PlayerMissle pp : playerMissiles) {
+            if (player.getPic() == "player.png") {
+                pp.setX(-50); 
             }
-            else{
-            pp.setX(50);
+        }
+        
+        for (PlayerMissle pp2 : playerMissiles2) {
+            if (player.getPic() == "player2.png") {
+                pp2.setX(50); 
+            } else {
+                // Do nothing
             }
         }
  
@@ -108,6 +115,9 @@ public class Game extends JPanel implements Runnable, KeyListener{
         if(!playerMissiles.isEmpty()) {
         	drawPlayerMissiles(g2d);
           
+        }
+        if (!playerMissiles2.isEmpty()) {
+            drawPlayerMissiles2(g2d); 
         }
 
         Color mynewColor2 = new Color(255,179,64);
@@ -136,12 +146,24 @@ public class Game extends JPanel implements Runnable, KeyListener{
       
 	}
     public void move() {
-            
         player.move();
+    
+        for (PlayerMissle pm : playerMissiles) {
+            pm.move();
+        }
+    
+        for (PlayerMissle pm2 : playerMissiles2) {
+            pm2.move();
+        }
     }
     private void drawPlayerMissiles(Graphics g2d) {
         for(PlayerMissle pm : playerMissiles) {
             g2d.drawImage(pm.getImg().getImage(), pm.getX(), pm.getY(),60, 60, this);
+        }
+    }
+    private void drawPlayerMissiles2(Graphics g2d) {
+        for(PlayerMissle pm2 : playerMissiles2) {
+            g2d.drawImage(pm2.getImg().getImage(), pm2.getX(), pm2.getY(),60, 60, this);
         }
     }
  
@@ -167,14 +189,19 @@ public class Game extends JPanel implements Runnable, KeyListener{
         gameStarted = false;
             
     }
-    if (key == 32 ) {
-            playerMissiles.add(new PlayerMissle(player.getx(), player.gety()+50, 20,20, key, new ImageIcon ("Pm1.png")));
-            
+    if (key == 32) { 
+        if (player.getPic().equals("player.png")) {
+            playerMissiles.add(new PlayerMissle(player.getx(), player.gety() + 50, 20, 20, key, new ImageIcon("Pm1.png")));
+        } else {
+            playerMissiles2.add(new PlayerMissle(player.getx(), player.gety() + 50, 20, 20, key, new ImageIcon("Pm1.png")));
+        }
+    }
+        
                
         
     
             
-    }
+    
     key = e.getKeyCode();
     if(key==65) {
         spacebar = true;
