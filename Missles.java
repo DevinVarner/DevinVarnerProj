@@ -5,23 +5,23 @@ import javax.swing.ImageIcon;
 public class Missles {
 
 	private int x, y;
-	private int dy;
+	private int dx;
 	private int w, h;
-	private ImageIcon shipImg;
+	public ImageIcon shipImg;
 	
 	public Missles() {
 		x=0;
 		y=0;
-		dy=0;
+		dx=0;
 		w=300;
 		h=500;
-		shipImg = new ImageIcon("");
+		shipImg = new ImageIcon("Pm1.png");
 	}
 	
 	public Missles(int xV, int yV, int width, int height, ImageIcon i, int dxV, int dyV) {
 		x=xV;
 		y=yV;
-		dy=dyV;
+		dx=dxV;
 		w=width;
 		h=height;
 		shipImg = i;
@@ -33,7 +33,7 @@ public class Missles {
 		w=6;
 		h=18;
 		shipImg = i;
-		dy=3;
+		dx=3;
 	}
 	
 	public void setX(int xV) {
@@ -67,11 +67,11 @@ public class Missles {
 		return h;
 	}
 	public void vert () {
-		dy*=-1;
+		dx*=-1;
 	}
 	public void move()
 	{
-		y+=dy;
+		x+=dx;
 		
 	}
 	public ImageIcon getImg() {
