@@ -81,22 +81,23 @@ public class Game extends JPanel implements Runnable, KeyListener{
         Color mynewcolor = new Color(236,88,6);
         
        
-        System.out.println(key);
+        
         if(spacebar && pd==true) {
             
         }
 
-        for (PlayerMissle pp : playerMissiles) {
-            if (player.getPic() == "player.png") {
+        for (PlayerMissle pp : playerMissiles)  {
+            if (player.getPic() == "player.png" || player.getPic() =="player2.png") {
                 pp.setX(-50); 
+                
             }
         }
         
         for (PlayerMissle pp2 : playerMissiles2) {
-            if (player.getPic() == "player2.png") {
+            if (player.getPic() == "player2.png" || player.getPic() =="player.png") {
                 pp2.setX(50); 
             } else {
-                // Do nothing
+                
             }
         }
  
@@ -191,7 +192,7 @@ public class Game extends JPanel implements Runnable, KeyListener{
     }
     if (key == 32) { 
         if (player.getPic().equals("player.png")) {
-            playerMissiles.add(new PlayerMissle(player.getx(), player.gety() + 50, 20, 20, key, new ImageIcon("Pm1.png")));
+            playerMissiles.add(new PlayerMissle(player.getx(), player.gety() + 50, 20, 20, key, new ImageIcon("Pm2.png")));
         } else {
             playerMissiles2.add(new PlayerMissle(player.getx(), player.gety() + 50, 20, 20, key, new ImageIcon("Pm1.png")));
         }
