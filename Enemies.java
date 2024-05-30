@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Enemies {
@@ -74,24 +75,47 @@ public class Enemies {
 		dx=dx*-1;
 	}
 	public void speedUp () {
-		dx=dx+2;
+		dx=dx+1;
 	}
 	public void stop (){
 		dx=0;
 	}
 	public void slowDown () {
-		dx=dx*-1;
+		dx=dx-2;
 	}
 	public void Hmove() {
-		dx=1;
+		dx=3;
 		x = x + dx;
+		
+	}
+	public void Hmove2() {
+		dx=-3;
+		x = x - dx;
 		
 	}
 	public void move() {
 		x+=dx;
 		
 	}
+	public void move2() {
+		x-=dx;
+		
+	}
 	public ImageIcon getImg() {
 		return shipImg;
 	} 
+	public boolean playerCollision(Pictures s) {
+		
+		Rectangle Ene = new Rectangle(s.getx(), s.gety(), s.getW(), s.getH());
+		Rectangle proj = new Rectangle(getX(), getY(), getW(), getH());
+		
+		if(Ene.intersects(proj)) {
+			
+		
+			return true;
+		}
+		return false;
+	}
 }
+	
+
